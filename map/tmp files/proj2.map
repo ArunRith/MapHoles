@@ -1,0 +1,98 @@
+MAP
+  IMAGETYPE      PNG
+  STATUS         ON 
+  EXTENT         913154.843600 120114.582600 1067382.510900 272932.046000
+  IMAGECOLOR     26 25 29  
+  
+  PROJECTION
+    "init=epsg:2263"
+  END
+  
+ SYMBOL
+   NAME 'transformer'
+   TYPE TRUETYPE
+   CHARACTER "♠"
+ END
+
+  OUTPUTFORMAT
+    NAME png
+    DRIVER "GD/PNG"
+    MIMETYPE "image/png"
+    IMAGEMODE RGB
+    EXTENSION "png"
+  END
+  
+  OUTPUTFORMAT
+    NAME jpeg
+    DRIVER "GD/JPEG"
+    MIMETYPE "image/jpeg"
+    IMAGEMODE RGB
+    EXTENSION "jpg"
+    FORMATOPTION QUALITY=80
+  END
+  
+
+  WEB
+    METADATA
+       "wms_name"       		"nypp"
+       "wms_title" 			"Police Precinct"
+       "wms_abstract"			"NYC Police Precinct Map"
+       "wms_onlineresource" 		"proj2.php"       
+       "wms_srs" 			"EPSG:2263 EPSG:4326"    
+       "wms_formats" 			'png'
+       "wfs_title"            		"Police Precinct"
+       "wfs_onlineresource"   		"proj2.php" 
+       "wfs_srs"               		"EPSG:2263 EPSG:4326"  
+       "wms_feature_info_mime_type" 	"text/html"
+       "wms_enable_request" 		"*"  	     
+       "wfs_enable_request" 		"*"  
+    END    
+  END
+
+#  WEB
+#    METADATA
+#       "wms_name"                       "nyccrash"
+#       "wms_title"                      "NYC Crash"
+#       "wms_abstract"                   "NYC Crash Map"
+#       "wms_onlineresource"             "proj2.php"
+#       "wms_srs"                        "EPSG:2263 EPSG:4326"
+#       "wms_formats"                    'png'
+#       "wfs_title"                      "NYC Crash"
+#       "wfs_onlineresource"             "proj2.php"
+#       "wfs_srs"                        "EPSG:2263 EPSG:4326"
+#       "wms_feature_info_mime_type"     "text/html"
+#       "wms_enable_request"             "*"
+#       "wfs_enable_request"             "*"
+#    END
+#  END
+
+  LAYER # Transformers Layer
+     NAME         transformers
+     STATUS       ON
+     TYPE         POINT
+     DUMP         TRUE
+     LABELITEM    "address"
+     CONNECTIONTYPE POSTGIS
+     CONNECTION  "user=sing16  password=singhsingh dbname=d120 host=134.74.112.18"
+     DATA "the_geom from (SELECT * FROM manholes WHERE complaint_type = 'Transformer' order by gid) as foo using unique gid using SRID=2263" 
+     CLASS
+       NAME       "Transformers"
+       STYLE
+        SYMBOL       "transformer"    
+        SIZE         12
+        COLOR        "#6D4C41"
+       END
+       LABEL
+        COLOR "#154360"
+        SIZE 7
+        ANTIALIAS TRUE
+        POSITION CL
+        PARTIALS FALSE
+        MINDISTANCE 300
+        BUFFER 1
+       END 
+     END
+  END # Transformers Layer ends here
+ 
+
+END
